@@ -63,8 +63,7 @@ const Maintable = ({
                 </div>
                 <div>
                   <span className=" text-sm text-gray-700">
-                    {convertDate(client.createdDate,client.createdAt)}
-                    {/* {convertDate(new Date(client.createdDate))} */}
+                    {convertDate(client.createdAt)}
                   </span>
                 </div>
                 <div>

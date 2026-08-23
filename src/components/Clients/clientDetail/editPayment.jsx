@@ -19,6 +19,7 @@ import {
 
 import { getClientDetailsSelector } from "../../../stateManagement/slice/clientSlice";
 import { todayNepaliDate } from "../../Common/todayNepaliDate";
+import { bsDateOnly } from "../../Common/ConvertEnglishDate";
 import NepaliDatePicker from "../../Common/NepaliDatePicker";
 import Button from "../../Button/Button";
 
@@ -144,7 +145,7 @@ function ClientEditPaymentModel(props) {
       setAnimate(true);
       setClientForm({
         ...editedData,
-        paymentDate: editedData.createdDate.split("T")[0],
+        paymentDate: bsDateOnly(editedData.createdAt),
         note: editedData.note,
         bankName: editedData.note.split("/")[0],
         chequeNo: editedData.note.split("/")[1],

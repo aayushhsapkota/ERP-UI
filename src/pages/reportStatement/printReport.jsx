@@ -2,7 +2,6 @@ import React from "react";
 import { todayNepaliDate } from "../../components/Common/todayNepaliDate";
 import { useSelector } from "react-redux";
 import { getCompanyData } from "../../stateManagement/slice/companySlice";
-import NepaliDate from "nepali-date-converter";
 
 const PrintReport = ({
   isExporting = false,
@@ -15,16 +14,14 @@ const PrintReport = ({
   merchant,
 }) => {
   // get date of first and last newDate
-  const firstDate = newData[0]?.createdDate.split("T")[0];
-  const lastDate = newData[newData.length - 1]?.createdDate.split("T")[0];
+  const firstDate = newData[0]?.createdAt;
+  const lastDate = newData[newData.length - 1]?.createdAt;
   const windowSize = window.innerWidth < 500 ? false : true;
   // const windowSize = true;
   const textSize = windowSize ? "text-sm" : "text-[0.61rem]";
   const textSizeBanner = windowSize ? "text-base" : "text-[0.8rem]";
   const insideTableTextSize = windowSize ? "text-sm" : "text-[0.55rem]";
   const companyDetail = useSelector(getCompanyData);
-  const nepaliDate= new NepaliDate();
-  const formattedDate = nepaliDate.format('YYYY-MM-DD');
   return (
     <div
       className={`w-[18cm] non-scalable`}
@@ -73,7 +70,7 @@ const PrintReport = ({
           </div>
           <div className={`${textSize}`}>
             {" "}
-            ( {convertDate(firstDate)} - {convertDate(lastDate)})
+            ( {convertDate(firstDate, true)} - {convertDate(lastDate, true)})
           </div>
         </div>
         <div className={`flex flex-row ${textSize}`}>
@@ -148,7 +145,7 @@ const PrintReport = ({
                 }
               >
                 <td className="border-b px-2 py-1">
-                  {client.createdDate.split("T")[0]}
+                  {convertDate(client.createdAt, true)}
                 </td>
                 <td className="text-left px-2 py-1 border-l border-b">
                   <span>
@@ -225,8 +222,7 @@ const PrintReport = ({
         </tbody>
       </table>
       <div className={`mt-4 ${textSize}`}>
-        Report Generated on: {convertDate(formattedDate)}
-        {/* {convertDate(todayNepaliDate(new Date())).split(" ")[1]} */}|{" "}
+        Report Generated on: {todayNepaliDate(new Date())} |{" "}
         {new Date().toLocaleTimeString("en-US", { hour12: true })}
       </div>
     </div>

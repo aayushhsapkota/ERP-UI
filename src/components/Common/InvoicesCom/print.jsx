@@ -1,5 +1,5 @@
 import React from "react";
-import convertDate from "../ConvertEnglishDate";
+import { formatBsDate } from "../ConvertEnglishDate";
 import { sumProductTotal } from "../../../utils/match";
 
 const Print = ({
@@ -64,7 +64,7 @@ const Print = ({
           {invoiceForm?.invoiceNo || invoiceNumber}
         </span>
         <span className={`text-sm text-[${onlyDate}]`}>
-          Date: {convertDate(invoiceForm?.createdDate)}
+          Date: {formatBsDate(invoiceForm?.createdDate)}
         </span>
       </h2>
       <h2>

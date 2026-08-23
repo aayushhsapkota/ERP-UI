@@ -120,9 +120,7 @@ const TransactionByID = ({
                   </div>
                   <div className={defaultTdContent}>
                     <span className="whitespace-nowrap text-ellipsis overflow-hidden text-[11px] sm:text-[15px]">
-                      {convertDate(client.createdDate,client.createdAt)}{" "}
-                      {/* {convertDate(new Date(client.createdDate))}{" "} */}
-                                                           
+                      {convertDate(client.createdAt)}{" "}
                     </span>
                   </div>
                   {name !== true && (
