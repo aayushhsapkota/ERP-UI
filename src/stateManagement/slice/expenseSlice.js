@@ -29,14 +29,10 @@ const initialState = {
   pageCount: 1,
   newForm: {
     id: nanoid(),
-   
     title: "",
-   
-    image: "",
     category: "",
     amount: "",
     remarks: "",
-    
   },
   editedID: null,
   deletedID: null,
@@ -159,7 +155,6 @@ export const expenseSlice = createSlice({
 
       const reNewForm = {
         title: "",
-        image: "",
         category: "",
         amount: "",
         remarks: "",

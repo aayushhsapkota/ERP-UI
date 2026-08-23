@@ -38,7 +38,6 @@ const initialState = {
   merchantSortBy: 1,
   newForm: {
     id: nanoid(),
-    image: "",
     name: "",
     email: "",
     billingAddress: "",
@@ -273,7 +272,6 @@ export const clientsSlice = createSlice({
       state.data = newDatas;
       const reNewForm = {
         id: nanoid(),
-        image: "",
         name: "",
         email: "",
         billingAddress: "",
@@ -292,7 +290,6 @@ export const clientsSlice = createSlice({
       state.dataMerchant = newDatas;
       const reNewForm = {
         id: nanoid(),
-        image: "",
         name: "",
         email: "",
         billingAddress: "",

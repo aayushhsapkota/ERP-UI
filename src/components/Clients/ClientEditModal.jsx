@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,12 +15,10 @@ import {
   defaultInputLargeStyle,
   defaultInputLargeInvalidStyle,
 } from "../../constants/defaultStyles";
-import ImageUpload from "../Common/ImageUpload";
 import { todayNepaliDate } from "../Common/todayNepaliDate";
 
 const emptyForm = {
   id: "",
-  image: "",
   name: "",
   email: "",
   billingAddress: "",
@@ -76,28 +74,13 @@ function ClientEditModal() {
     });
   }, []);
 
-  const onChangeImage = useCallback((str) => {
-    setClientForm((prev) => ({ ...prev, image: str }));
-  }, []);
-
   const onCancelHandler = useCallback(() => {
     dispatch(setEditedId(null));
   }, [dispatch]);
 
-  const imageUploadClasses = useMemo(() => {
-    const defaultStyle = "rounded-xl ";
-
-    if (!clientForm.image) {
-      return defaultStyle + " border-dashed border-2 border-indigo-400 ";
-    }
-
-    return defaultStyle;
-  }, [clientForm]);
-
   useEffect(() => {
     setValidForm((prev) => ({
       id: true,
-      image: true,
       email: true,
       name: !!clientForm?.name?.trim(),
       billingAddress: true,
@@ -152,15 +135,8 @@ function ClientEditModal() {
                     <div className="mt-2">
                       {/*  */}
                       <div className="bg-white rounded-xl mt-4">
-                        <div className="flex mt-2">
-                          <ImageUpload
-                            keyName="QuickEditImageUpload"
-                            className={imageUploadClasses}
-                            url={clientForm.image}
-                            onChangeImage={onChangeImage}
-                          />
-
-                          <div className="flex-1 pl-3">
+                        <div className="mt-2">
+                          <div>
                             <input
                               autoComplete="nope"
                               value={clientForm.name}

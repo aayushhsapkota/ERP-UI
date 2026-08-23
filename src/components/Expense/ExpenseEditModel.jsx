@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 import React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,7 +11,6 @@ import {
   setDeleteId,
   updateExpense,
 } from "../../stateManagement/slice/expenseSlice";
-import ImageUpload from "../Common/ImageUpload";
 import {
   defaultInputInvalidStyle,
   defaultInputStyle,
@@ -21,7 +20,6 @@ import { EditDropdown } from "./dropdown";
 function ExpenseEditModel() {
   const emptyForm = {
     title: "",
-    image: "",
     category: "",
     amount: 0,
     remarks: "",
@@ -79,27 +77,14 @@ function ExpenseEditModel() {
     });
   }, []);
 
-  const onChangeImage = useCallback((str) => {
-    setExpenseForm((prev) => ({ ...prev, image: str }));
-  }, []);
-
   const onCancelHandler = useCallback(() => {
     dispatch(setEditedId(null));
   }, [dispatch]);
-
-  const imageUploadClasses = useMemo(() => {
-    const defaultStyle = "rounded-xl ";
-    if (!expenseForm.image) {
-      return defaultStyle + " border-dashed border-2 border-indigo-400 ";
-    }
-    return defaultStyle;
-  }, [expenseForm]);
 
   useEffect(() => {
     setValidForm((prev) => ({
       id: true,
       title: !!expenseForm.title,
-      image: true,
       category: !!expenseForm.category,
       amount: !!expenseForm.amount,
       remarks: true,
@@ -149,15 +134,8 @@ function ExpenseEditModel() {
                     </h3>
                     <div className="mt-2">
                       <div className="bg-white rounded-xl mt-4">
-                        <div className="flex mt-2">
-                          <ImageUpload
-                            keyName="QuickEditImageUpload"
-                            className={imageUploadClasses}
-                            url={expenseForm.image}
-                            onChangeImage={onChangeImage}
-                          />
-
-                          <div className="flex-1 pl-3">
+                        <div className="mt-2">
+                          <div>
                             <div>
                               <input
                                 value={expenseForm.title}

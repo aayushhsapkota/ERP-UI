@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +10,6 @@ import {
   setDeleteId,
   updateProduct,
 } from "../../stateManagement/slice/productSlice";
-import ImageUpload from "../Common/ImageUpload";
 import {
   defaultInputInvalidStyle,
   defaultInputStyle,
@@ -22,7 +21,6 @@ const emptyForm = {
   itemCode: "",
   title: "",
   brand: "",
-  image: "",
   category: "",
   price: 0,
   purchasePrice: 0,
@@ -98,23 +96,9 @@ function ProductEditModal(props) {
     });
   }, []);
 
-  const onChangeImage = useCallback((str) => {
-    setProductForm((prev) => ({ ...prev, image: str }));
-  }, []);
-
   const onCancelHandler = useCallback(() => {
     dispatch(setEditedId(null));
   }, [dispatch]);
-
-  const imageUploadClasses = useMemo(() => {
-    const defaultStyle = "rounded-xl ";
-
-    if (!productForm.image) {
-      return defaultStyle + " border-dashed border-2 border-indigo-400 ";
-    }
-
-    return defaultStyle;
-  }, [productForm]);
 
   useEffect(() => {
     setValidForm((prev) => ({
@@ -122,7 +106,6 @@ function ProductEditModal(props) {
       itemCode: true,
       title: !!productForm.title,
       brand: true,
-      image: true,
       category: !!productForm.category,
       price: !!productForm.price,
       purchasePrice: true,
@@ -179,15 +162,8 @@ function ProductEditModal(props) {
                     <div className="mt-2">
                       {/*  */}
                       <div className="bg-white rounded-xl mt-4">
-                        <div className="flex mt-2">
-                          <ImageUpload
-                            keyName="QuickEditImageUpload"
-                            className={imageUploadClasses}
-                            url={productForm.image}
-                            onChangeImage={onChangeImage}
-                          />
-
-                          <div className="flex-1 pl-3">
+                        <div className="mt-2">
+                          <div>
                             <div>
                               <input
                                 autoComplete="nope"

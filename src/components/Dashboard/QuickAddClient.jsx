@@ -1,10 +1,9 @@
 /* eslint-disable no-useless-escape */
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button/Button";
-import ImageUpload from "../Common/ImageUpload";
 import SectionTitle from "../Common/SectionTitle";
 import {
   defaultInputStyle,
@@ -25,7 +24,6 @@ import { NotifySuccess } from "../../toastify";
 
 const emptyForm = {
   id: "",
-  image: "",
   name: "",
   email: "",
   billingAddress: "",
@@ -47,14 +45,6 @@ function QuickAddClient({ merchant }) {
     Object.keys(emptyForm).reduce((a, b) => {
       return { ...a, [b]: false };
     }, {})
-  );
-
-  const onChangeImage = useCallback(
-    (str) => {
-      setClientForm((prev) => ({ ...prev, image: str }));
-      dispatch(updateNewClientFormField({ key: "image", value: str }));
-    },
-    [dispatch]
   );
 
   const handlerClientValue = useCallback(
@@ -94,20 +84,9 @@ function QuickAddClient({ merchant }) {
     setIsTouched(false);
   }, [clientForm, dispatch, validForm]);
 
-  const imageUploadClasses = useMemo(() => {
-    const defaultStyle = "rounded-xl ";
-
-    if (!clientForm.image) {
-      return defaultStyle + " border-dashed border-2 border-indigo-400 ";
-    }
-
-    return defaultStyle;
-  }, [clientForm]);
-
   useEffect(() => {
     setValidForm(() => ({
       id: true,
-      image: true,
       name: clientForm?.name?.trim() ? true : false,
       email: true,
       billingAddress: merchant
@@ -136,20 +115,8 @@ function QuickAddClient({ merchant }) {
         {" "}
         Add New {merchant === true ? "Merchant" : "Customer"}{" "}
       </SectionTitle>
-      <div className="flex mt-2">
-        {isInitLoading ? (
-          <Skeleton className="skeleton-input-radius skeleton-image border-dashed border-2" />
-        ) : (
-          <ImageUpload
-            keyName="QuickEditImageUpload"
-            className={imageUploadClasses}
-            url={!clientForm?.image ? "" : clientForm?.image}
-            folder="clients"
-            onChangeImage={onChangeImage}
-          />
-        )}
-
-        <div className="flex-1 pl-3">
+      <div className="mt-2">
+        <div className="flex-1">
           {isInitLoading ? (
             <Skeleton className={defaultSkeletonLargeStyle} />
           ) : (

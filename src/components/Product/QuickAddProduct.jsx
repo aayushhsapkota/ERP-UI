@@ -1,10 +1,9 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button/Button";
-import ImageUpload from "../Common/ImageUpload";
 import SectionTitle from "../Common/SectionTitle";
 import {
   defaultInputStyle,
@@ -26,7 +25,6 @@ const emptyForm = {
   itemCode: "",
   title: "",
   brand: "",
-  image: "",
   category: "",
   price: 0,
   purchasePrice: 0,
@@ -48,14 +46,6 @@ function QuickAddProduct() {
     Object.keys(emptyForm).reduce((a, b) => {
       return { ...a, [b]: false };
     }, {})
-  );
-
-  const onChangeImage = useCallback(
-    (str) => {
-      setProductForm((prev) => ({ ...prev, image: str }));
-      dispatch(updateNewProductFormField({ key: "image", value: str }));
-    },
-    [dispatch]
   );
 
   const handlerProductValue = useCallback(
@@ -104,22 +94,11 @@ function QuickAddProduct() {
     setIsTouched(false);
   }, [productForm, dispatch, validForm]);
 
-  const imageUploadClasses = useMemo(() => {
-    const defaultStyle = "rounded-xl ";
-
-    if (!productForm?.image) {
-      return defaultStyle + " border-dashed border-2 border-indigo-400";
-    }
-
-    return defaultStyle;
-  }, [productForm]);
-
   useEffect(() => {
     setValidForm((prev) => ({
       itemCode: true,
       title: !!productForm.title,
       brand: true,
-      image: true,
       category: !!productForm.category,
       price: !!productForm.price,
       purchasePrice: true,
@@ -141,20 +120,8 @@ function QuickAddProduct() {
   return (
     <div className="bg-white rounded-xl p-4">
       <SectionTitle> Quick Add Product </SectionTitle>
-      <div className="flex mt-2">
-        {isInitLoading ? (
-          <Skeleton className="skeleton-input-radius skeleton-image border-dashed border-2" />
-        ) : (
-          <ImageUpload
-            keyName="QuickEditImageUpload"
-            className={imageUploadClasses}
-            url={productForm?.image}
-            folder="products"
-            onChangeImage={onChangeImage}
-          />
-        )}
-
-        <div className="flex-1 pl-3 text-sm">
+      <div className="mt-2">
+        <div className="flex-1 text-sm">
           {isInitLoading ? (
             <Skeleton className={defaultSkeletonLargeStyle} />
           ) : (

@@ -52,7 +52,6 @@ function ImportFile() {
       {
         name: "Required",
         email: "Optional",
-        image: "Optional",
         mobileNo: "Required",
         billingAddress: "Optional",
         openingBalance: "Optional",

@@ -149,32 +149,22 @@ function ClientTable({
             >
               <div className="flex flex-wrap items-center p-2">
                 <div className="flex-col flex-0 flex items-center mr-4 justify-center">
-                  {openModal === false &&
-                    (client.image ? (
-                      <span className="flex justify-center items-center">
-                        <img
-                          className="object-contain h-12 w-12 rounded-2xl"
-                          loading="lazy"
-                          src={client.image}
-                          alt={client.name}
+                  {openModal === false && (
+                    <span className="h-12 w-12 rounded-2xl bg-gray-100 flex justify-center items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-8 w-8 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                          clipRule="evenodd"
                         />
-                      </span>
-                    ) : (
-                      <span className="h-12 w-12 rounded-2xl bg-gray-100 flex justify-center items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-8 w-8 text-gray-400"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
-                    ))}
+                      </svg>
+                    </span>
+                  )}
                 </div>
                 {!openModal && (
                   <div className="flex-col flex-1">

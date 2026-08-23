@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { todayNepaliDate } from "../Common/todayNepaliDate";
 
 
@@ -6,7 +6,6 @@ import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button/Button";
-import ImageUpload from "../Common/ImageUpload";
 import SectionTitle from "../Common/SectionTitle";
 import {
   defaultInputStyle,
@@ -26,7 +25,6 @@ import { Dropdown } from "./dropdown";
 
 const emptyForm = {
   title: "",
-  image: "",
   category: "",
   amount: 0,
   remarks: "",
@@ -43,14 +41,6 @@ function QuickAddExpense() {
     Object.keys(emptyForm).reduce((a, b) => {
       return { ...a, [b]: false };
     }, {})
-  );
-
-  const onChangeImage = useCallback(
-    (str) => {
-      setExpenseForm((prev) => ({ ...prev, image: str }));
-      dispatch(updateNewExpenseFormField({ key: "image", value: str }));
-    },
-    [dispatch]
   );
 
   const handlerExpenseValue = useCallback(
@@ -93,20 +83,9 @@ function QuickAddExpense() {
     setIsTouched(false);
   }, [expenseForm, dispatch, validForm]);
 
-  const imageUploadClasses = useMemo(() => {
-    const defaultStyle = "rounded-xl ";
-
-    if (!expenseForm?.image) {
-      return defaultStyle + " border-dashed border-2 border-indigo-400";
-    }
-
-    return defaultStyle;
-  }, [expenseForm]);
-
   useEffect(() => {
     setValidForm((prev) => ({
       title: !!expenseForm.title,
-      image: true,
       category: !!expenseForm.category,
       amount: !!expenseForm.amount,
       remarks: true,
@@ -122,20 +101,8 @@ function QuickAddExpense() {
   return (
     <div className="bg-white rounded-xl p-4">
       <SectionTitle> Quick Add Expense </SectionTitle>
-      <div className="flex mt-2">
-        {isInitLoading ? (
-          <Skeleton className="skeleton-input-radius skeleton-image border-dashed border-2" />
-        ) : (
-          <ImageUpload
-            keyName="QuickEditImageUpload"
-            className={imageUploadClasses}
-            url={expenseForm?.image}
-            folder="expenses"
-            onChangeImage={onChangeImage}
-          />
-        )}
-
-        <div className="flex-1 pl-3 text-sm">
+      <div className="mt-2">
+        <div className="flex-1 text-sm">
           {isInitLoading ? (
             <Skeleton className={defaultSkeletonLargeStyle} />
           ) : (

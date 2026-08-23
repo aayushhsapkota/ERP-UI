@@ -17,7 +17,6 @@
     "@szhsin/react-menu": "^3.3.0",
     "axios": "^1.2.0",
     "dom-to-image": "^2.6.0",
-    "firebase": "^9.14.0",
     "framer-motion": "^7.6.15",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
