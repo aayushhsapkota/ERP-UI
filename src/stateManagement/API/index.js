@@ -6,7 +6,7 @@ let baseURL;
  if (process.env.NODE_ENV !== "production") {
       baseURL = "http://localhost:4000/API/"; 
   } else {
-    baseURL = "http://localhost:4000/API/"; //link your production-backend if you have any
+    baseURL = "https://erp-backend-j9kg.onrender.com/API/"; //link your production-backend if you have any
   }
 
 
