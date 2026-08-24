@@ -135,7 +135,6 @@ export const addOrReduceProductQuantity = (id, payload) => async (dispatch) => {
       payload.quantity,
       payload.isAdd,
       payload.note,
-      payload.stockDate,
       payload.isSecondaryUnitChecked
     );
     toast.success(message, {

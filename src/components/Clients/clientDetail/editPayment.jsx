@@ -13,20 +13,14 @@ import {
 import {
   defaultInputStyle,
   defaultInputInvalidStyle,
-  defaultInputLargeStyle,
-  defaultInputLargeInvalidStyle,
 } from "../../../constants/defaultStyles";
 
 import { getClientDetailsSelector } from "../../../stateManagement/slice/clientSlice";
-import { todayNepaliDate } from "../../Common/todayNepaliDate";
-import { bsDateOnly } from "../../Common/ConvertEnglishDate";
-import NepaliDatePicker from "../../Common/NepaliDatePicker";
 import Button from "../../Button/Button";
 
 function ClientEditPaymentModel(props) {
   const emptyForm = {
     paymentType: "PaymentIn",
-    paymentDate: todayNepaliDate(new Date()),
     amount: 0,
     note: "Cash",
     bankName: "",
@@ -68,7 +62,6 @@ function ClientEditPaymentModel(props) {
           note: isPaidInCash
             ? clientForm.note
             : clientForm.bankName + "/" + clientForm.chequeNo,
-          paymentDate: clientForm.paymentDate,
         },
         fromClientByID,
         ClientDetail,
@@ -134,7 +127,6 @@ function ClientEditPaymentModel(props) {
 
   useEffect(() => {
     setValidForm(() => ({
-      paymentDate: true,
       amount: clientForm?.amount > 0,
       note: true,
     }));
@@ -145,7 +137,6 @@ function ClientEditPaymentModel(props) {
       setAnimate(true);
       setClientForm({
         ...editedData,
-        paymentDate: bsDateOnly(editedData.createdAt),
         note: editedData.note,
         bankName: editedData.note.split("/")[0],
         chequeNo: editedData.note.split("/")[1],
@@ -190,25 +181,6 @@ function ClientEditPaymentModel(props) {
                     <div className="mt-2">
                       {/*  */}
                       <div className="bg-white rounded-xl mt-4">
-                        <div className="flex mt-2">
-                          <div className="flex-1">
-                            <div>
-                              <NepaliDatePicker
-                                className={
-                                  !validForm.paymentDate && isTouched
-                                    ? defaultInputLargeInvalidStyle
-                                    : defaultInputLargeStyle
-                                }
-                                id={"nepali-datepicker-4"}
-                                setData={setClientForm}
-                                data={clientForm}
-                                name="paymentDate"
-                                value={clientForm.paymentDate}
-                                disabledBeforeDate={true}
-                              />
-                            </div>
-                          </div>
-                        </div>
                         <div className="flex mt-2">
                           <div className="flex-1">
                             <input

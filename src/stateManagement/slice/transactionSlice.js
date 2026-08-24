@@ -353,7 +353,6 @@ export const transactionSlice = createSlice({
           },
         ],
         note: payload.note,
-        createdDate: payload.stockDate,
       };
       state.productList.unshift(productTransaction);
     },

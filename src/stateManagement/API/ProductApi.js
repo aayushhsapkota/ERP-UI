@@ -20,14 +20,12 @@ export const addOrReduceProductQuantityAPI = (
   quantity,
   isAdd,
   note,
-  stockDate,
   isSecondaryUnitChecked
 ) =>
   API.patch(`/products/quantity/${id}`, {
     quantity,
     isAdd,
     note,
-    stockDate,
     isSecondaryUnitChecked,
   });
 export const UpdateProductAPI = (UpdateProductData) =>
