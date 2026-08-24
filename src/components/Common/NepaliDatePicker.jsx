@@ -175,7 +175,7 @@ const NepaliDatePicker = ({
       {open && !disabled && position && createPortal(
         <div
           ref={dropdownRef}
-          className="fixed z-50 w-64 bg-white rounded-lg shadow-xl border border-gray-200 p-2 text-sm"
+          className="fixed z-[1001] w-64 bg-white rounded-lg shadow-xl border border-gray-200 p-2 text-sm"
           style={{ top: position.top, left: position.left }}
         >
           <div className="flex items-center justify-between mb-2">

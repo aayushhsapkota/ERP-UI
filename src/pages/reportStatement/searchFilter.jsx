@@ -36,6 +36,19 @@ const SearchFilter = ({
       })
     );
   }, [dateData?.startDate, dateData?.endDate]);
+  // Report reuses the Transactions page's shared date filter state, so leaving
+  // the report must restore it to the no-filter default, or the Transactions
+  // page's filter icon stays lit red even though nothing was filtered there.
+  useEffect(() => {
+    return () => {
+      dispatch(
+        setTransactionDate({
+          startDate: "",
+          endDate: todayNepaliDate(new Date()),
+        })
+      );
+    };
+  }, [dispatch]);
   const ToFilterDate =
     window.innerWidth > 650 && window.innerWidth < 800
       ? ["", "Today"]
