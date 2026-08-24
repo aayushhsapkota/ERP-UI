@@ -48,7 +48,6 @@ import {
   sumTotalTaxes,
 } from "../../utils/match";
 import EmptyBar from "../../components/Common/EmptyBar";
-import { todayNepaliDate } from "../../components/Common/todayNepaliDate";
 import { ProductDetail } from "../../components/Common/InvoicesCom/ProductDetail";
 import { CustomerDetail } from "../../components/Common/InvoicesCom/CustomerDetail";
 import PrintInvoice from "../../components/Common/InvoicesCom/print";
@@ -401,7 +400,6 @@ function SaleReturnInvoice(props) {
         ...invoiceNewForm,
         companyDetail: { ...company },
         dueDate: "",
-        createdDate: todayNepaliDate(new Date()),
       });
     }
   }, [dispatch, params]);
@@ -412,7 +410,6 @@ function SaleReturnInvoice(props) {
         ...invoiceNewForm,
         companyDetail: { ...company },
         dueDate: "",
-        createdDate: todayNepaliDate(new Date()),
       });
     }
     if (params.id !== "new" && invoiceForm === null) {
@@ -425,7 +422,6 @@ function SaleReturnInvoice(props) {
             allInvoiceDetails?.dueDate !== null
               ? allInvoiceDetails?.dueDate.split("T")[0]
               : "",
-          createdDate: allInvoiceDetails?.createdDate.split("T")[0],
         });
       }
       setIsViewMode(true);

@@ -54,22 +54,6 @@ function convertDate(engDate, dateOnly = false) {
   return `${finalDate} ${nepaliTimeOnly12hr}`;
 }
 
-// Pretty-prints a value that is ALREADY a BS "YYYY-MM-DD" string (e.g.
-// Invoice.createdDate) as "Weekday DD, Month-YYYY". Unlike convertDate above,
-// this does no UTC/timezone conversion at all — there's no instant to
-// convert, just a calendar string to reformat.
-export function formatBsDate(bsDateString) {
-  if (!bsDateString) return "";
-  const nepaliDate = new NepaliDate(bsDateString);
-  const formattedDate = nepaliDate.format("ddd DD, MMMM YYYY");
-  const splitDate = formattedDate.split(", ");
-  const firstDate = splitDate[0].split(" ");
-  const secondDate = splitDate[1].split(" ");
-  return (
-    secondDate[1] + ", " + secondDate[0] + "-" + firstDate[1] + " " + firstDate[0]
-  );
-}
-
 // Plain BS "YYYY-MM-DD" (e.g. for pre-filling a NepaliDatePicker) derived
 // from a UTC timestamp, using the same timezone-safe conversion as above.
 export function bsDateOnly(engDate) {

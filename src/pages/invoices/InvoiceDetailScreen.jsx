@@ -49,7 +49,6 @@ import {
 } from "../../utils/match";
 import PrintInvoice from "../../components/Common/InvoicesCom/print";
 import EmptyBar from "../../components/Common/EmptyBar";
-import { todayNepaliDate } from "../../components/Common/todayNepaliDate";
 import { CustomerDetail } from "../../components/Common/InvoicesCom/CustomerDetail";
 import { ProductDetail } from "../../components/Common/InvoicesCom/ProductDetail";
 import { TitleInvoice } from "../../components/Common/InvoicesCom/title";
@@ -70,7 +69,6 @@ function InvoiceDetailScreen() {
     paidAmount: 0,
     dueDate: "",
     invoiceType: "Sale",
-    createdDate: todayNepaliDate(new Date()),
     currencyUnit: "Rs.",
     clientDetail: {
       id: "",
@@ -470,7 +468,6 @@ function InvoiceDetailScreen() {
         ...invoiceNewForm,
         companyDetail: { ...company },
         dueDate: "",
-        createdDate: todayNepaliDate(new Date()),
       });
     }
   }, [dispatch, params]);
@@ -482,7 +479,6 @@ function InvoiceDetailScreen() {
         ...invoiceNewForm,
         companyDetail: { ...company },
         dueDate: "",
-        createdDate: todayNepaliDate(new Date()),
       });
     }
     if (params.id !== "new" && invoiceForm === null) {
@@ -495,7 +491,6 @@ function InvoiceDetailScreen() {
             allInvoiceDetails?.dueDate !== null
               ? allInvoiceDetails?.dueDate.split("T")[0]
               : "",
-          createdDate: allInvoiceDetails?.createdDate.split("T")[0],
         });
       }
       setIsViewMode(true);
