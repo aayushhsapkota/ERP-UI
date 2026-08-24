@@ -7,12 +7,14 @@ import {
   getShowNavbar,
   setToggleNavbar,
 } from "../../stateManagement/slice/InitialMode";
+import { getCompanyData } from "../../stateManagement/slice/companySlice";
 
 
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const showNavbar = useSelector(getShowNavbar);
+  const company = useSelector(getCompanyData);
   const toggleNavbar = useCallback(() => {
     dispatch(setToggleNavbar());
   }, [dispatch]);
@@ -93,7 +95,7 @@ function Navbar() {
             }}
           >
             <HiOutlineHome className="h-5 w-6 mb-[0.3rem] mr-1" />
-            Paradise Cafe
+            {company?.companyName || "Business Name"}
           </motion.div>
         )}
       </div>

@@ -6,13 +6,14 @@ import { HiOutlineHome } from "react-icons/hi";
 import { BiImport } from "react-icons/bi";
 import { CiImport } from "react-icons/ci";
 import { RiExchangeLine } from "react-icons/ri";
-import { AiOutlinePlus, AiOutlineDashboard } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineDashboard, AiOutlineShop } from "react-icons/ai";
 import ProductIcon from "../Icons/ProductIcon";
 import InvoiceIcon from "../Icons/InvoiceIcon";
 import ClientPlusIcon from "../Icons/ClientPlusIcon";
 import SecurityIcon from "../Icons/SecurityIcon";
 import Skeleton from "react-loading-skeleton";
 import { logout } from "../../stateManagement/slice/authSlice";
+import { getCompanyData } from "../../stateManagement/slice/companySlice";
 import {
   getShowNavbar,
   setToggleNavbar,
@@ -54,6 +55,11 @@ const NAV_DATA = [
     link: "expenses",
     Icon: CiImport,
   },
+  {
+    title: "Business Profile",
+    link: "settings/business-profile",
+    Icon: AiOutlineShop,
+  },
 ];
 
 const navDefaultClasses =
@@ -71,11 +77,7 @@ function Sidebar() {
   }, [dispatch]);
   const initLoading = false;
   const { pathname } = useLocation();
-  const company = [
-    {
-      companyName: "Paradise Cafe",
-    },
-  ];
+  const company = useSelector(getCompanyData);
 
   const handleLogout = useCallback(() => {
     if (window.confirm('Are you sure want to logout?')) {
@@ -127,7 +129,7 @@ function Sidebar() {
             <span className="nav-loading">
               <HiOutlineHome className="h-5 w-6 mb-[0.4rem] ml-11" />
             </span>
-            Paradise Cafe
+            {company?.companyName || "Business Name"}
           </motion.span>
         </div>
 
@@ -191,7 +193,7 @@ function Sidebar() {
           </NavLink>
           <div className="mt-4">
             {/* {NAV_DATA */}
-            {NAV_DATA.filter(({ title }) => isAdmin || (!isAdmin && title !== "Dashboard" && title !== "Import"))
+            {NAV_DATA.filter(({ title }) => isAdmin || (!isAdmin && title !== "Dashboard" && title !== "Import" && title !== "Business Profile"))
             .map(({ title, link, Icon }) => (
               <li key={title} className="mb-2">
                 <NavLink

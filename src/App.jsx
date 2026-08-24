@@ -1,7 +1,8 @@
 import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import React, { lazy, Suspense, useEffect } from "react";
 import Container from "./components/Container/Container";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCompanyData } from "./stateManagement/slice/companySlice";
 //container
 import ProductEditModal from "./components/Product/ProductEditModal";
 import ProductDeleteConfirm from "./components/Product/ProductDeleteConfirm";
@@ -91,10 +92,14 @@ const ImportFileLazy = lazy(() =>
 const AboutLazy = lazy(() =>
   wait(500).then(() => import("./pages/about/AboutScreen"))
 );
+const BusinessProfileLazy = lazy(() =>
+  wait(500).then(() => import("./pages/settings/BusinessProfileScreen"))
+);
 
 const App = () => {
   const isAuthorized = useSelector((state) => state.auth.isAuthorized);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const dispatch = useDispatch();
 
   const containerRef = useRef(null);
   useEffect(() => {
@@ -102,6 +107,12 @@ const App = () => {
       SecureClient();
     }
   }, [SecureClientKeyType, SecureClientRight]);
+
+  useEffect(() => {
+    if (isAuthorized) {
+      dispatch(fetchCompanyData());
+    }
+  }, [isAuthorized, dispatch]);
 
   return (
     <BrowserRouter>
@@ -145,6 +156,12 @@ const App = () => {
                   path="about"
                   element={<AboutLazy />}
                 />
+                {isAdmin && (
+                  <Route
+                    path="settings/business-profile"
+                    element={<BusinessProfileLazy />}
+                  />
+                )}
                 <Route path="expenses">
                   <Route path="" element={<ExpenseLazy />} exact />
                 </Route>

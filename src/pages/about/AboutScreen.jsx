@@ -7,24 +7,6 @@ function AboutScreen() {
       <div className="p-4 flex justify-center items-center w-full min-h-[88vh] sm:min-h-[85vh]">
         <div className="bg-white rounded-xl px-10 py-6 sm:px-16 sm:py-10 font-title">
           <PageTitle title="Quartz Technology Pvt Ltd." />
-          {/* <div className="mt-4 mb-5 flex flex-row items-center">
-            <img
-              src="https://avatars.githubusercontent.com/u/85009048?v=4"
-              className="h-12 mr-3"
-              alt="Git"
-            />
-            <div>
-              <a
-                href="https://www.linkedin.com/in/dilip-dawadi-0ab68722b/"
-                target={"_blank"}
-                className="underline cursor-pointer"
-                rel="noreferrer"
-              >
-                Hi, I'm Dilip Dawadi
-              </a>
-              <h1> Full Stack Developer</h1>
-            </div>
-          </div> */}
 
           <PageTitle title="Billing Management System" />
           <div className="mt-2 pl-4 text-sm">
@@ -35,38 +17,6 @@ function AboutScreen() {
               <li> Can Export Image </li>
             </ul>
           </div>
-          {/* <div className="font-title mt-3 mb-5">
-            <div>
-              📫 How to reach me{" "}
-              <a
-                href="mailto:zanzerdawadi123@gmail.com"
-                className="underline cursor-pointer"
-              >
-                zanzerdawadi123@gmail.com
-              </a>{" "}
-              (or){" "}
-              <a
-                href="https://www.facebook.com/dilip.dawadi.7"
-                target={"_blank"}
-                className="underline cursor-pointer"
-                rel="noreferrer"
-              >
-                facebook
-              </a>
-            </div>
-            <div>
-              <span>✅ </span>
-              <a
-                href="h"
-                className="underline cursor-pointer"
-                target={"_blank"}
-                rel="noreferrer"
-              >
-                {" "}
-                Repo Link Here
-              </a>
-            </div>
-          </div> */}
 
           <PageTitle title="Build By" />
           <div className="mt-2 mb-5 pl-4 text-sm">
@@ -81,13 +31,13 @@ function AboutScreen() {
           <PageTitle title="Contact" />
           <div className="mt-2 pl-1 text-sm">
             <a
-              href="tel:+9779810024561"
+              href="tel:+61420223902"
               className="underline cursor-pointer"
               target={"_blank"}
               rel="noreferrer"
             >
               {" "}
-              +9779864280323
+              +61420223902
             </a>
           </div>
         </div>
