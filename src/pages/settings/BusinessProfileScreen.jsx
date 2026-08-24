@@ -27,17 +27,24 @@ function BusinessProfileScreen() {
   const status = useSelector(getCompanyStatus);
 
   const [form, setForm] = useState(emptyForm);
+  const [savedForm, setSavedForm] = useState(emptyForm);
 
   useEffect(() => {
-    setForm({
+    const loadedForm = {
       companyName: company?.companyName || "",
       billingAddress: company?.billingAddress || "",
       companyEmail: company?.companyEmail || "",
       companyPhone: company?.companyPhone || "",
       companyMobile: company?.companyMobile || "",
       image: company?.image || "",
-    });
+    };
+    setForm(loadedForm);
+    setSavedForm(loadedForm);
   }, [company]);
+
+  const isDirty = Object.keys(emptyForm).some(
+    (key) => form[key] !== savedForm[key]
+  );
 
   const handleChange = useCallback((key) => (event) => {
     const value = event.target.value;
@@ -64,12 +71,13 @@ function BusinessProfileScreen() {
   }, []);
 
   const handleSave = useCallback(() => {
+    if (!isDirty) return;
     if (!form.companyName) {
       NotifyWarning("Please enter a business name");
       return;
     }
     dispatch(updateCompanyData(form));
-  }, [dispatch, form]);
+  }, [dispatch, form, isDirty]);
 
   return (
     <div>
@@ -161,7 +169,7 @@ function BusinessProfileScreen() {
 
           <button
             type="button"
-            disabled={status === "loading"}
+            disabled={status === "loading" || !isDirty}
             onClick={handleSave}
             className="mt-6 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
           >
