@@ -20,7 +20,7 @@ function Button(props) {
 
   const buttonClasses = useMemo(() => {
     let defaultClasses =
-      "rounded-lg font-title text-white flex flex-row items-center justify-center";
+      "rounded-lg font-title flex flex-row items-center justify-center";
 
     if (block) {
       defaultClasses += " block w-full ";
@@ -64,6 +64,7 @@ function Button(props) {
         defaultClasses +=
           " primary-self-text border-[rgb(15 78 128 / 83%)] border ";
     } else {
+      defaultClasses += " text-white";
       if (secondary) {
         defaultClasses += " bg-gray-400 ";
       } else if (success) {
