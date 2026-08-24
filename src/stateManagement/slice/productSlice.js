@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 import { NotifySuccess, NotifyWarning } from "../../toastify";
 import { toast } from "react-toastify";
-import { todayNepaliDate } from "../../components/Common/todayNepaliDate";
 const Status = Object.freeze({
   IDLE: "idle",
   LOADING: "loading",
@@ -37,7 +36,6 @@ const initialState = {
     quantity: "",
     lowQuantityAlert: "",
     remarks: "",
-    createdDate: todayNepaliDate(new Date()),
   },
   editedID: null,
   deletedID: null,
@@ -109,7 +107,6 @@ export const createMultipleProduct =
         data: { data, message },
       } = await api.createMultipleProductAPI({
         products: AddMultipleProductData,
-        createdDate: todayNepaliDate(new Date()),
       });
       toast.success(message, {
         position: "bottom-center",

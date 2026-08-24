@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 import { toast } from "react-toastify";
-import { todayNepaliDate } from "../../components/Common/todayNepaliDate";
 import { NotifySuccess, NotifyWarning } from "../../toastify";
 import * as api from "../API/ClientApi";
 import { setUpdateTransactionOnClientEdit } from "./transactionSlice";
@@ -46,7 +45,6 @@ const initialState = {
     vatNumber: "",
     totalAmountToPay: "",
     openingBalance: "",
-    createdDate: todayNepaliDate(new Date()),
   },
   editedID: null,
   deletedID: null,
@@ -125,7 +123,6 @@ export const createMultipleCustomer = (AddClientData) => async (dispatch) => {
       data: { data, message },
     } = await api.CreateMultipleClientsAPI({
       AddClientData,
-      createdDate: todayNepaliDate(new Date()),
     });
     toast.success(message, {
       position: "bottom-center",

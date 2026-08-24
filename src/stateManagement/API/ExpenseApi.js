@@ -28,8 +28,6 @@ export const GetExpenseByIdAPI = ({ id, page }) =>
 
 export const CreateExpenseAPI = (AddExpenseData) =>
   API.post("/expenses", AddExpenseData);
-// export const createMultipleExpenseAPI = ({ expenses, createdDate }) =>
-//   API.post("/expenses/multiple", { expenses, createdDate });
 
 export const UpdateExpenseAPI = (UpdateExpenseData) =>
   API.patch(`/expenses/${UpdateExpenseData._id}`, UpdateExpenseData);
