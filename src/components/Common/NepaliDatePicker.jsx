@@ -1,5 +1,10 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useRef, useEffect, useMemo, useCallback, useLayoutEffect } from "react";
+import { createPortal } from "react-dom";
 import NepaliDate from "nepali-date-converter";
+
+const CALENDAR_WIDTH = 256; // w-64
+const CALENDAR_HEIGHT_ESTIMATE = 300;
+const VIEWPORT_MARGIN = 8;
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -40,6 +45,9 @@ const NepaliDatePicker = ({
 }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
+  const inputRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const [position, setPosition] = useState(null);
 
   const today = useMemo(() => new NepaliDate(date), [date]);
   const todayStr = today.format("YYYY-MM-DD");
@@ -59,13 +67,49 @@ const NepaliDatePicker = ({
 
   useEffect(() => {
     function onClickOutside(e) {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target)
+      ) {
         setOpen(false);
       }
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
+
+  // The calendar is portalled to <body> so an ancestor's overflow:hidden
+  // (e.g. the report page's search bar) can't clip it. Position is computed
+  // from the input's viewport rect and clamped so it never runs off-screen.
+  useLayoutEffect(() => {
+    if (!open) return;
+    const reposition = () => {
+      const rect = inputRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      let left = rect.left;
+      if (left + CALENDAR_WIDTH > window.innerWidth - VIEWPORT_MARGIN) {
+        left = rect.right - CALENDAR_WIDTH;
+      }
+      left = Math.max(VIEWPORT_MARGIN, left);
+
+      let top = rect.bottom + 4;
+      if (top + CALENDAR_HEIGHT_ESTIMATE > window.innerHeight - VIEWPORT_MARGIN) {
+        top = rect.top - CALENDAR_HEIGHT_ESTIMATE - 4;
+      }
+      top = Math.max(VIEWPORT_MARGIN, top);
+
+      setPosition({ top, left });
+    };
+    reposition();
+    window.addEventListener("resize", reposition);
+    window.addEventListener("scroll", reposition, true);
+    return () => {
+      window.removeEventListener("resize", reposition);
+      window.removeEventListener("scroll", reposition, true);
+    };
+  }, [open]);
 
   const goPrevMonth = useCallback(() => {
     setViewMonth((m) => {
@@ -118,6 +162,7 @@ const NepaliDatePicker = ({
   return (
     <div className="relative inline-block" ref={containerRef}>
       <input
+        ref={inputRef}
         readOnly
         id={id}
         placeholder="yyyy-mm-dd"
@@ -127,8 +172,12 @@ const NepaliDatePicker = ({
         className={className + " nepali-datepicker cursor-pointer"}
         style={{ caretColor: "transparent" }}
       />
-      {open && !disabled && (
-        <div className="absolute z-50 mt-1 w-64 bg-white rounded-lg shadow-xl border border-gray-200 p-2 text-sm left-0">
+      {open && !disabled && position && createPortal(
+        <div
+          ref={dropdownRef}
+          className="fixed z-50 w-64 bg-white rounded-lg shadow-xl border border-gray-200 p-2 text-sm"
+          style={{ top: position.top, left: position.left }}
+        >
           <div className="flex items-center justify-between mb-2">
             <button
               type="button"
@@ -203,7 +252,8 @@ const NepaliDatePicker = ({
               );
             })}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
