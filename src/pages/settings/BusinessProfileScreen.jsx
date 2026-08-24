@@ -9,6 +9,9 @@ import {
 import { defaultInputStyle } from "../../constants/defaultStyles";
 import { NotifyWarning } from "../../toastify";
 
+const MAX_LOGO_SIZE_MB = 2;
+const MAX_LOGO_SIZE_BYTES = MAX_LOGO_SIZE_MB * 1024 * 1024;
+
 const emptyForm = {
   companyName: "",
   billingAddress: "",
@@ -46,6 +49,11 @@ function BusinessProfileScreen() {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
       NotifyWarning("Please choose an image file");
+      return;
+    }
+    if (file.size > MAX_LOGO_SIZE_BYTES) {
+      NotifyWarning(`Logo must be under ${MAX_LOGO_SIZE_MB}MB`);
+      event.target.value = "";
       return;
     }
     const reader = new FileReader();
