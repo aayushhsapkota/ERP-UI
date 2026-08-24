@@ -2,33 +2,55 @@ import React, { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { HiOutlineHome } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getShowNavbar,
   setToggleNavbar,
 } from "../../stateManagement/slice/InitialMode";
 import { getCompanyData } from "../../stateManagement/slice/companySlice";
 
+const PAGE_TITLES = {
+  dashboard: "Dashboard",
+  transactions: "Transactions",
+  invoices: "Invoices",
+  customer: "Customer",
+  merchant: "Merchant",
+  products: "Products",
+  purchases: "Purchases",
+  salesreturn: "Sales Return",
+  purchasesreturn: "Purchase Return",
+  import: "Import",
+  expenses: "Expenses",
+  settings: "Business Profile",
+  about: "About Dev",
+};
 
 function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const showNavbar = useSelector(getShowNavbar);
   const company = useSelector(getCompanyData);
   const toggleNavbar = useCallback(() => {
     dispatch(setToggleNavbar());
   }, [dispatch]);
 
-  
+  const pageTitle = useMemo(() => {
+    const segment = pathname.split("/").filter(Boolean)[0];
+    return PAGE_TITLES[segment] || "";
+  }, [pathname]);
 
   const classes = useMemo(() => {
     const defaultClasses =
-      "bg-white flex items-center pr-3 z-12 fixed w-full z-10 border-b border-slate-50 transition-all";
+      "bg-white flex items-center pr-3 fixed w-full z-10 border-b border-slate-50 transition-all";
 
     if (!showNavbar) {
       return defaultClasses + " pl-3 ";
     }
-    return defaultClasses + " pl-72 ";
+    // Only shift the header for the persistent sidebar at sm+; below that
+    // the sidebar is an overlay drawer, so shifting the header would push
+    // the toggle button almost off-screen (matches Container.jsx's pl-72 breakpoint).
+    return defaultClasses + " pl-3 sm:pl-72 ";
   }, [showNavbar]);
 
   return (
@@ -36,6 +58,8 @@ function Navbar() {
       <motion.button
         className="p-2 focus:outline-none rounded-md"
         onClick={toggleNavbar}
+        aria-label={showNavbar ? "Collapse navigation menu" : "Expand navigation menu"}
+        aria-expanded={showNavbar}
         initial={{
           translateX: 0,
         }}
@@ -59,12 +83,16 @@ function Navbar() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            // d={showNavbar ? "M15 19l-7-7 7-7" : "M4 6h16M4 12h16M4 18h7"}
             d="M4 6h16M4 12h16M4 18h16"
           />
         </svg>
       </motion.button>
-      <div
+      {showNavbar && pageTitle && (
+        <span className="hidden sm:block ml-2 text-lg font-semibold text-[#444444] truncate">
+          {pageTitle}
+        </span>
+      )}
+      <motion.div
         className="flex flex-1 text-2xl sm:text-3xl font-bold p-4 relative justify-center items-center"
         initial={{
           opacity: 0,
@@ -73,7 +101,6 @@ function Navbar() {
           opacity: 1,
         }}
       >
-        {showNavbar && <>&nbsp;</>}
         {!showNavbar && (
           <motion.div
             className="relative font-bold font-title text-lg px-2 flex flex-row justify-center items-center cursor-pointer"
@@ -98,8 +125,7 @@ function Navbar() {
             {company?.companyName || "Business Name"}
           </motion.div>
         )}
-      </div>
-     
+      </motion.div>
     </header>
   );
 }

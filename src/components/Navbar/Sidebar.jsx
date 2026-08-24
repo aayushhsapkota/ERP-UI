@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +15,14 @@ import { logout } from "../../stateManagement/slice/authSlice";
 import { getCompanyData } from "../../stateManagement/slice/companySlice";
 import {
   getShowNavbar,
+  setNavbarFalse,
   setToggleNavbar,
 } from "../../stateManagement/slice/InitialMode";
+
+// Below this width the sidebar behaves as an overlay drawer rather than a
+// persistent pinned nav — matches the `sm` breakpoint Container.jsx and
+// Navbar.jsx use to decide whether page content shifts to make room for it.
+const MOBILE_OVERLAY_BREAKPOINT = 640;
 
 const NAV_DATA = [
   {
@@ -62,7 +68,7 @@ const NAV_DATA = [
 ];
 
 const navDefaultClasses =
-  "fixed inset-0 duration-200 transform lg:opacity-100 z-10 w-72 bg-white h-screen p-3 overflow-y-auto";
+  "fixed inset-0 duration-200 transform z-10 w-72 bg-white h-screen p-3 overflow-y-auto";
 
 const navItemDefaultClasses = "block px-4 py-2 rounded-md flex flex-1";
 
@@ -89,7 +95,7 @@ function Sidebar() {
   
 
   const onClickNavbar = useCallback(() => {
-    const isMobile = window.innerWidth < 767;
+    const isMobile = window.innerWidth < MOBILE_OVERLAY_BREAKPOINT;
     if (isMobile) {
       toggleNavbar();
     }
@@ -97,8 +103,28 @@ function Sidebar() {
 
   const aboutRoute = useMemo(() => pathname === "/about", [pathname]);
 
+  // Let Escape dismiss the drawer, but only in overlay mode — on a pinned
+  // desktop sidebar, Escape is likely meant for something else (e.g. a modal).
+  useEffect(() => {
+    if (!showNavbar) return undefined;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && window.innerWidth < MOBILE_OVERLAY_BREAKPOINT) {
+        dispatch(setNavbarFalse());
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showNavbar, dispatch]);
+
   return (
     <>
+      {showNavbar && (
+        <div
+          className="fixed inset-0 z-[9] bg-black/40 sm:hidden"
+          onClick={toggleNavbar}
+          aria-hidden="true"
+        />
+      )}
       <nav
         className={
           showNavbar
