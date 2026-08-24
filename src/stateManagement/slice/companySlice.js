@@ -12,7 +12,6 @@ const initialState = {
   status: Status.IDLE,
   data: {
     id: "",
-    image: "",
     billingAddress: "",
     companyName: "",
     companyEmail: "",
@@ -60,7 +59,6 @@ export const companySlice = createSlice({
     setCompanyData: (state, action) => {
       const {
         _id,
-        image,
         billingAddress,
         companyName,
         companyEmail,
@@ -68,7 +66,6 @@ export const companySlice = createSlice({
         companyMobile,
       } = action.payload || {};
       state.data.id = _id || "";
-      state.data.image = image || "";
       state.data.billingAddress = billingAddress || "";
       state.data.companyName = companyName || "";
       state.data.companyEmail = companyEmail || "";

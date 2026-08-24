@@ -62,7 +62,7 @@ const NAV_DATA = [
 ];
 
 const navDefaultClasses =
-  "fixed inset-0 duration-200 transform lg:opacity-100 z-10 w-72 bg-white h-screen p-3";
+  "fixed inset-0 duration-200 transform lg:opacity-100 z-10 w-72 bg-white h-screen p-3 overflow-y-auto";
 
 const navItemDefaultClasses = "block px-4 py-2 rounded-md flex flex-1";
 
@@ -125,15 +125,7 @@ function Sidebar() {
             }}
           >
             <span className="nav-loading">
-              {company?.image ? (
-                <img
-                  className="h-5 w-5 mb-[0.4rem] ml-11 rounded object-cover"
-                  src={company.image}
-                  alt="Business logo"
-                />
-              ) : (
-                <HiOutlineHome className="h-5 w-6 mb-[0.4rem] ml-11" />
-              )}
+              <HiOutlineHome className="h-5 w-6 mb-[0.4rem] ml-11" />
             </span>
             {company?.companyName || "Business Name"}
           </motion.span>
@@ -250,16 +242,14 @@ function Sidebar() {
         </div>
 
         <hr />
-        <div className="absolute bottom-auto w-full px-8 mt-5">
-  <button
-    onClick={handleLogout}
-    className="w-1/2 px-4 py-2 text-white text-center text-sm bg-red-500 rounded-md transition-colors duration-300 hover:bg-red-700"
-  >
-    Logout
-  </button>
-
-</div>
-
+        <div className="w-full px-8 mt-5 mb-8">
+          <button
+            onClick={handleLogout}
+            className="w-1/2 px-4 py-2 text-white text-center text-sm bg-red-500 rounded-md transition-colors duration-300 hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
       </nav>
     </>
   );

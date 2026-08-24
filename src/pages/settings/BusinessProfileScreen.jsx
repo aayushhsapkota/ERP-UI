@@ -9,16 +9,12 @@ import {
 import { defaultInputStyle } from "../../constants/defaultStyles";
 import { NotifyWarning } from "../../toastify";
 
-const MAX_LOGO_SIZE_MB = 2;
-const MAX_LOGO_SIZE_BYTES = MAX_LOGO_SIZE_MB * 1024 * 1024;
-
 const emptyForm = {
   companyName: "",
   billingAddress: "",
   companyEmail: "",
   companyPhone: "",
   companyMobile: "",
-  image: "",
 };
 
 function BusinessProfileScreen() {
@@ -36,7 +32,6 @@ function BusinessProfileScreen() {
       companyEmail: company?.companyEmail || "",
       companyPhone: company?.companyPhone || "",
       companyMobile: company?.companyMobile || "",
-      image: company?.image || "",
     };
     setForm(loadedForm);
     setSavedForm(loadedForm);
@@ -49,25 +44,6 @@ function BusinessProfileScreen() {
   const handleChange = useCallback((key) => (event) => {
     const value = event.target.value;
     setForm((prev) => ({ ...prev, [key]: value }));
-  }, []);
-
-  const handleImageChange = useCallback((event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      NotifyWarning("Please choose an image file");
-      return;
-    }
-    if (file.size > MAX_LOGO_SIZE_BYTES) {
-      NotifyWarning(`Logo must be under ${MAX_LOGO_SIZE_MB}MB`);
-      event.target.value = "";
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      setForm((prev) => ({ ...prev, image: reader.result }));
-    };
-    reader.readAsDataURL(file);
   }, []);
 
   const handleSave = useCallback(() => {
@@ -84,29 +60,6 @@ function BusinessProfileScreen() {
       <div className="p-4 flex justify-center items-center w-full min-h-[88vh] sm:min-h-[85vh]">
         <div className="bg-white rounded-xl px-10 py-6 sm:px-16 sm:py-10 font-title w-full sm:w-[32rem]">
           <PageTitle title="Business Profile" />
-
-          <div className="mt-4 flex flex-col items-center">
-            <div className="h-20 w-20 rounded-lg bg-gray-100 overflow-hidden flex items-center justify-center">
-              {form.image ? (
-                <img
-                  src={form.image}
-                  alt="Business logo"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <span className="text-xs text-gray-400">No Logo</span>
-              )}
-            </div>
-            <label className="mt-2 text-sm cursor-pointer primary-self-text underline">
-              Upload Logo
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
-              />
-            </label>
-          </div>
 
           <div className="mt-4">
             <div className="font-title text-sm text-default-color">
