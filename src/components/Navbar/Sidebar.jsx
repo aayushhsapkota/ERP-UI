@@ -11,7 +11,6 @@ import ProductIcon from "../Icons/ProductIcon";
 import InvoiceIcon from "../Icons/InvoiceIcon";
 import ClientPlusIcon from "../Icons/ClientPlusIcon";
 import SecurityIcon from "../Icons/SecurityIcon";
-import Skeleton from "react-loading-skeleton";
 import { logout } from "../../stateManagement/slice/authSlice";
 import { getCompanyData } from "../../stateManagement/slice/companySlice";
 import {
@@ -75,7 +74,6 @@ function Sidebar() {
   const toggleNavbar = useCallback(() => {
     dispatch(setToggleNavbar());
   }, [dispatch]);
-  const initLoading = false;
   const { pathname } = useLocation();
   const company = useSelector(getCompanyData);
 
@@ -127,29 +125,20 @@ function Sidebar() {
             }}
           >
             <span className="nav-loading">
-              <HiOutlineHome className="h-5 w-6 mb-[0.4rem] ml-11" />
+              {company?.image ? (
+                <img
+                  className="h-5 w-5 mb-[0.4rem] ml-11 rounded object-cover"
+                  src={company.image}
+                  alt="Business logo"
+                />
+              ) : (
+                <HiOutlineHome className="h-5 w-6 mb-[0.4rem] ml-11" />
+              )}
             </span>
             {company?.companyName || "Business Name"}
           </motion.span>
         </div>
 
-        {initLoading && <Skeleton className="px-4 py-5 rounded-md" />}
-        {!!company?.image && !initLoading && (
-          <motion.span
-            className={
-              navItemDefaultClasses + " bg-gray-50 flex items-center px-3"
-            }
-          >
-            <img
-              className={"object-cover h-10 w-10 rounded-lg"}
-              src={company?.image}
-              alt="upload_image"
-            />
-            <span className="flex-1 pl-2 font-title rounded-r py-1 border-r-4 border-indigo-400 flex items-center inline-block whitespace-nowrap text-ellipsis overflow-hidden ">
-              {company?.companyName}
-            </span>
-          </motion.span>
-        )}
         <ul className="mt-4">
           <NavLink to="/invoices/new">
             {({ isActive }) => {
