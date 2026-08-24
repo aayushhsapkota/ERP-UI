@@ -794,12 +794,16 @@ export const ProductDetail = ({
                       " rounded-none rounded-r-xl bg-white border text-black focus:border-l-0 block flex-1 min-w-0 w-full text-sm"
                     }
                     onChange={(e) => {
+                      const rawValue = e.target.value;
+                      if (rawValue === "") {
+                        setInvoiceForm({ ...invoiceForm, paidAmount: "" });
+                        return;
+                      }
+                      const typedAmount = Number(rawValue);
+                      const total = Number(invoiceForm?.totalAmount) || 0;
                       setInvoiceForm({
                         ...invoiceForm,
-                        paidAmount:
-                          invoiceForm?.totalAmount < e.target.value
-                            ? invoiceForm?.totalAmount
-                            : e.target.value,
+                        paidAmount: typedAmount > total ? total : typedAmount,
                       });
                     }}
                     onFocus={(e) => e.target.select()}
