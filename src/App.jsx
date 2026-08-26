@@ -89,9 +89,6 @@ const PurchaseReturnDetailLazy = lazy(() =>
 const ImportFileLazy = lazy(() =>
   wait(500).then(() => import("./pages/import/ImportFile"))
 );
-const AboutLazy = lazy(() =>
-  wait(500).then(() => import("./pages/about/AboutScreen"))
-);
 const BusinessProfileLazy = lazy(() =>
   wait(500).then(() => import("./pages/settings/BusinessProfileScreen"))
 );
@@ -152,10 +149,6 @@ const App = () => {
                   <Route path=":id" element={<PurchaseReturnDetailLazy />} />
                 </Route>
                 {isAdmin && <Route path="import" element={<ImportFileLazy />} />}
-                <Route
-                  path="about"
-                  element={<AboutLazy />}
-                />
                 {isAdmin && (
                   <Route
                     path="settings/business-profile"

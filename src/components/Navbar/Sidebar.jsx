@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineHome } from "react-icons/hi";
 import { BiImport } from "react-icons/bi";
@@ -10,7 +10,6 @@ import { AiOutlinePlus, AiOutlineDashboard, AiOutlineShop } from "react-icons/ai
 import ProductIcon from "../Icons/ProductIcon";
 import InvoiceIcon from "../Icons/InvoiceIcon";
 import ClientPlusIcon from "../Icons/ClientPlusIcon";
-import SecurityIcon from "../Icons/SecurityIcon";
 import { logout } from "../../stateManagement/slice/authSlice";
 import { getCompanyData } from "../../stateManagement/slice/companySlice";
 import {
@@ -80,7 +79,6 @@ function Sidebar() {
   const toggleNavbar = useCallback(() => {
     dispatch(setToggleNavbar());
   }, [dispatch]);
-  const { pathname } = useLocation();
   const company = useSelector(getCompanyData);
 
   const handleLogout = useCallback(() => {
@@ -100,8 +98,6 @@ function Sidebar() {
       toggleNavbar();
     }
   }, [toggleNavbar]);
-
-  const aboutRoute = useMemo(() => pathname === "/about", [pathname]);
 
   // Let Escape dismiss the drawer, but only in overlay mode — on a pinned
   // desktop sidebar, Escape is likely meant for something else (e.g. a modal).
@@ -238,34 +234,6 @@ function Sidebar() {
             ))}
           </div>
         </ul>
-
-        <hr />
-
-        <div className="my-4">
-          <NavLink to={"about"} onClick={onClickNavbar}>
-            <motion.span
-              className="block px-4 py-2 rounded-md flex text-default-color"
-              style={{
-                color: aboutRoute ? "primary-self-text" : "#777",
-              }}
-              whileHover={{
-                scale: [1.03, 1, 1.03, 1, 1.03, 1, 1.03, 1],
-                color: "primary-self-text",
-                textShadow: "0px 0px 3px #85FF66",
-                transition: {
-                  backgroundColor: {
-                    type: "spring",
-                    damping: 18,
-                  },
-                },
-              }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <SecurityIcon className="h-6 w-6 mr-4" />
-              About Dev
-            </motion.span>
-          </NavLink>
-        </div>
 
         <hr />
         <div className="w-full px-8 mt-5 mb-8">

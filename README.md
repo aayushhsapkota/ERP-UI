@@ -2,7 +2,7 @@
 
 A React single-page app for a small-business ERP/invoicing system: sales & purchase invoicing (with returns), a customer/merchant ledger, inventory, expenses, a unified transactions ledger, dashboard analytics, and printable/PDF statements. Dates throughout the app use the Nepali (Bikram Sambat) calendar.
 
-This is the client for [`erp-backend`](../erp-backend), the REST API it talks to.
+This is the client for [`erp-backend`](https://github.com/aayushhsapkota/erp-backend), the REST API it talks to.
 
 ## Demo Login
 
@@ -32,7 +32,7 @@ Use the following demo administrator account:
 ## Prerequisites
 
 - Node.js 16+ and npm
-- A running instance of the [`erp-backend`](../erp-backend) API (local or deployed)
+- A running instance of the [`erp-backend`](https://github.com/aayushhsapkota/erp-backend) API (local or deployed)
 
 ## Getting started
 

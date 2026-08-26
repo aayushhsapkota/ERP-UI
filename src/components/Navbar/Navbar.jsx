@@ -22,7 +22,6 @@ const PAGE_TITLES = {
   import: "Import",
   expenses: "Expenses",
   settings: "Business Profile",
-  about: "About Dev",
 };
 
 function Navbar() {
