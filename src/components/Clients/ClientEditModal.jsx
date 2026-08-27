@@ -15,7 +15,6 @@ import {
   defaultInputLargeStyle,
   defaultInputLargeInvalidStyle,
 } from "../../constants/defaultStyles";
-import { todayNepaliDate } from "../Common/todayNepaliDate";
 
 const emptyForm = {
   id: "",
@@ -59,7 +58,7 @@ function ClientEditModal() {
 
     dispatch(
       updateClient({
-        updateData: { ...clientForm, createdDate: todayNepaliDate(new Date()) },
+        updateData: { ...clientForm },
         data: client,
       })
     );

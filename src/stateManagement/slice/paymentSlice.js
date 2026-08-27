@@ -42,7 +42,6 @@ export const createPayment =
           partyDetails: payload.partyDetails,
           transactionNumber: data._id,
           transactionType: payload.paymentType,
-          createdDate: payload.paymentDate,
           fromClientByID,
         })
       );
@@ -88,7 +87,6 @@ export const updatedPayment =
           partyDetails: payload.partyDetails,
           transactionNumber: payload.transactionNumber,
           transactionType: payload.paymentType,
-          createdDate: payload.paymentDate,
           fromClientByID,
         })
       );

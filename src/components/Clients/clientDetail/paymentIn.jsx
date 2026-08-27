@@ -7,8 +7,6 @@ import SectionTitle from "../../Common/SectionTitle";
 import {
   defaultInputStyle,
   defaultInputInvalidStyle,
-  defaultInputLargeStyle,
-  defaultInputLargeInvalidStyle,
 } from "../../../constants/defaultStyles";
 
 import {
@@ -17,7 +15,6 @@ import {
 } from "../../../stateManagement/slice/paymentSlice";
 import { getClientDetailsSelector } from "../../../stateManagement/slice/clientSlice";
 import { todayNepaliDate } from "../../Common/todayNepaliDate";
-import NepaliDatePicker from "../../Common/NepaliDatePicker";
 
 function PaymentIn({ merchant }) {
   const clientDetail = useSelector(getClientDetailsSelector);
@@ -118,25 +115,6 @@ function PaymentIn({ merchant }) {
   return (
     <div className="bg-white rounded-xl p-4">
       <SectionTitle> Add Payment {merchant ? "Out" : "In"} </SectionTitle>
-      <div className="flex mt-2">
-        <div className="flex-1">
-          <div>
-            <NepaliDatePicker
-              className={
-                !validForm.paymentDate && isTouched
-                  ? defaultInputLargeInvalidStyle
-                  : defaultInputLargeStyle
-              }
-              id={"nepali-datepicker-3"}
-              setData={setClientForm}
-              data={clientForm}
-              name="paymentDate"
-              value={clientForm.paymentDate}
-              disabledBeforeDate={true}
-            />
-          </div>
-        </div>
-      </div>
       <div className="flex mt-2">
         <div className="flex-1">
           <input

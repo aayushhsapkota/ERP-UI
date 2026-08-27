@@ -53,7 +53,7 @@ const Print = ({
         {invoiceForm?.companyDetail?.billingAddress}
       </h2>
       <h2 className="text-center">
-        (+977) {invoiceForm?.companyDetail?.companyMobile}
+        {invoiceForm?.companyDetail?.companyMobile}
       </h2>
       <h2 className="text-center">
         {invoiceForm?.companyDetail?.companyPhone}
@@ -64,7 +64,7 @@ const Print = ({
           {invoiceForm?.invoiceNo || invoiceNumber}
         </span>
         <span className={`text-sm text-[${onlyDate}]`}>
-          Date: {convertDate(invoiceForm?.createdDate)}
+          Date: {convertDate(invoiceForm?.createdAt, true)}
         </span>
       </h2>
       <h2>

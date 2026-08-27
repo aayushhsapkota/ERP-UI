@@ -83,9 +83,7 @@ const TransactionByProductID = ({ data, initLoading, id }) => {
           </div>
           <div className={defaultTdContent}>
             <span className="whitespace-nowrap text-ellipsis overflow-hidden text-[11px] sm:text-[14px]">
-              {convertDate(
-                client.createdDate ? client.createdDate : client.createdAt,client.createdAt
-              )}
+              {convertDate(client.createdAt)}
             </span>
           </div>
           <div className={defaultTdContent}>

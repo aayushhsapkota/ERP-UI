@@ -1,5 +1,6 @@
 import Button from "../../Button/Button";
 import NepaliDatePicker from "../../Common/NepaliDatePicker";
+import convertDate from "../../Common/ConvertEnglishDate";
 import ClientPlusIcon from "../../Icons/ClientPlusIcon";
 import { defaultInputSmStyle } from "../../../constants/defaultStyles";
 import { useCallback, useState } from "react";
@@ -233,18 +234,15 @@ export const CustomerDetail = ({
           <div className="flex flex-row justify-between items-center mb-1">
             <div className="font-title flex-1"> Creation Date </div>
             <div className="font-title flex-1 text-right">
-              <NepaliDatePicker
+              <input
+                readOnly
+                disabled
                 className={
                   !isViewMode
                     ? defaultInputSmStyle + " border-gray-300 text-right"
                     : " text-right bg-white"
                 }
-                disabled={true}
-                setData={setInvoiceForm}
-                name="createdDate"
-                data={invoiceForm}
-                value={invoiceForm?.createdDate}
-                id={"nepali-datepicker-6"}
+                value={convertDate(invoiceForm?.createdAt || new Date(), true)}
               />
             </div>
           </div>

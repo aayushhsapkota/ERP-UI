@@ -7,8 +7,6 @@ import SectionTitle from "../Common/SectionTitle";
 import {
   defaultInputStyle,
   defaultInputInvalidStyle,
-  defaultInputLargeStyle,
-  defaultInputLargeInvalidStyle,
   defaultSkeletonLargeStyle,
 } from "../../constants/defaultStyles";
 
@@ -19,15 +17,12 @@ import {
 import { newTransactionByProductAmount } from "../../stateManagement/slice/transactionSlice";
 import { ChooseUnitForStock } from "./dropdown";
 import Skeleton from "react-loading-skeleton";
-import { todayNepaliDate } from "../Common/todayNepaliDate";
-import NepaliDatePicker from "../Common/NepaliDatePicker";
 
 function AddStock({ isAdd }) {
   const ProductDetail = useSelector(getProductByIdSelector);
   const hasUnit = ProductDetail && (ProductDetail.primaryUnit || ProductDetail.secondaryUnit);
   const emptyForm = {
     quantity: "",
-    stockDate: todayNepaliDate(new Date()),
     note: "",
     unit: "Choose Unit",
   };
@@ -77,7 +72,6 @@ function AddStock({ isAdd }) {
             ? false
             : true,
         conversionRatio: ProductDetail.conversionRatio,
-        stockDate: productForm.stockDate,
       })
     );
     dispatch(
@@ -87,7 +81,6 @@ function AddStock({ isAdd }) {
           ...productForm,
           isAdd: isAdd,
           unit: productForm.unit,
-          stockDate: productForm.stockDate,
         },
       })
     );
@@ -96,7 +89,6 @@ function AddStock({ isAdd }) {
 
   useEffect(() => {
     setValidForm(() => ({
-      stockDate: true,
       quantity: productForm.quantity ? true : false,
       note: true,
       // unit: productForm.unit === "Choose Unit" ? false : true,
@@ -142,25 +134,6 @@ function AddStock({ isAdd }) {
               </span>
             </div>
           )}
-        </div>
-      </div>
-      <div className="flex mt-2">
-        <div className="flex-1">
-          <div>
-            <NepaliDatePicker
-              className={
-                !validForm.stockDate && isTouched
-                  ? defaultInputLargeInvalidStyle
-                  : defaultInputLargeStyle
-              }
-              id={"nepali-datepicker-5"}
-              setData={setProductForm}
-              data={productForm}
-              name="stockDate"
-              value={productForm.stockDate}
-              disabledBeforeDate={true}
-            />
-          </div>
         </div>
       </div>
       <div className="flex mt-2">

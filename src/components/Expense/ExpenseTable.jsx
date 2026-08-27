@@ -21,8 +21,7 @@ import { defaultSearchStyle } from "../../constants/defaultStyles";
 import { BiFilter } from "react-icons/bi";
 import Button from "../Button/Button";
 import { todayNepaliDate } from "../Common/todayNepaliDate";
-
-// import NepaliDateConverter from "../Common/nepaliDateConverter";
+import { bsDateOnly } from "../Common/ConvertEnglishDate";
 
 
 function ExpenseTable({
@@ -251,17 +250,8 @@ function ExpenseTable({
                       
 
                         <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                          {expense.createdDate}
-                           
+                          {bsDateOnly(expense.createdAt)}
                         </span>
-
-                        {/* {(
-                          <NepaliDateConverter
-                            date={new Date(
-                              expense.createdAt
-                            ).toLocaleDateString()}
-                          />
-                        ) || "n/a"} */}
                       </span>
                     </div>
                   </div>

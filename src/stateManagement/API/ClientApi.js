@@ -21,8 +21,8 @@ export const GetAllClientsAPI = ({
 export const GetClientsByIdAPI = (id) => API.get(`/clients/${id}`);
 export const CreateClientsAPI = (AddClientsData) =>
   API.post("/clients", AddClientsData);
-export const CreateMultipleClientsAPI = ({ AddClientData, createdDate }) =>
-  API.post("/clients/multiple", { AddClientData, createdDate });
+export const CreateMultipleClientsAPI = ({ AddClientData }) =>
+  API.post("/clients/multiple", { AddClientData });
 export const UpdateClientsAPI = (UpdateClientsData) =>
   API.patch(`/clients/${UpdateClientsData._id}`, UpdateClientsData);
 export const DeleteClientsAPI = (id, merchant) => API.delete(`/clients/${id}`, { params: { merchant } });

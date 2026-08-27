@@ -58,16 +58,10 @@ export const sumTotalTaxes = (taxes) => {
 
 export const sumTotalAmount = (subTotal, taxAmount) => {
   const total = parseFloat(subTotal) + parseFloat(taxAmount);
-
-  return Number.isInteger(total)
-    ? total
-    : total?.toFixed(4)?.toString()?.slice(0, -2);
+  return Number.isInteger(total) ? total : parseFloat(total.toFixed(2));
 };
 
 export const minusTotalDiscountAmount = (subTotal, taxAmount) => {
   const total = parseFloat(subTotal) - parseFloat(taxAmount);
-
-  return Number.isInteger(total)
-    ? total
-    : total?.toFixed(4)?.toString()?.slice(0, -2);
+  return Number.isInteger(total) ? total : parseFloat(total.toFixed(2));
 };

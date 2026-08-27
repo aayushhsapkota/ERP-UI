@@ -19,7 +19,6 @@ import {
   getClientStatus,
   createClient,
 } from "../../stateManagement/slice/clientSlice";
-import { todayNepaliDate } from "../Common/todayNepaliDate";
 import { NotifySuccess } from "../../toastify";
 
 const emptyForm = {
@@ -77,7 +76,6 @@ function QuickAddClient({ merchant }) {
       createClient({
         ...clientForm,
         clientType: merchant === true ? "Merchant" : "Customer",
-        createdDate: todayNepaliDate(new Date()),
       })
     );
     console.log(clientForm);

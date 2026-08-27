@@ -1,22 +1,27 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineHome } from "react-icons/hi";
 import { BiImport } from "react-icons/bi";
 import { CiImport } from "react-icons/ci";
 import { RiExchangeLine } from "react-icons/ri";
-import { AiOutlinePlus, AiOutlineDashboard } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineDashboard, AiOutlineShop } from "react-icons/ai";
 import ProductIcon from "../Icons/ProductIcon";
 import InvoiceIcon from "../Icons/InvoiceIcon";
 import ClientPlusIcon from "../Icons/ClientPlusIcon";
-import SecurityIcon from "../Icons/SecurityIcon";
-import Skeleton from "react-loading-skeleton";
 import { logout } from "../../stateManagement/slice/authSlice";
+import { getCompanyData } from "../../stateManagement/slice/companySlice";
 import {
   getShowNavbar,
+  setNavbarFalse,
   setToggleNavbar,
 } from "../../stateManagement/slice/InitialMode";
+
+// Below this width the sidebar behaves as an overlay drawer rather than a
+// persistent pinned nav — matches the `sm` breakpoint Container.jsx and
+// Navbar.jsx use to decide whether page content shifts to make room for it.
+const MOBILE_OVERLAY_BREAKPOINT = 640;
 
 const NAV_DATA = [
   {
@@ -54,10 +59,15 @@ const NAV_DATA = [
     link: "expenses",
     Icon: CiImport,
   },
+  {
+    title: "Business Profile",
+    link: "settings/business-profile",
+    Icon: AiOutlineShop,
+  },
 ];
 
 const navDefaultClasses =
-  "fixed inset-0 duration-200 transform lg:opacity-100 z-10 w-72 bg-white h-screen p-3";
+  "fixed inset-0 duration-200 transform z-10 w-72 bg-white h-screen p-3 overflow-y-auto";
 
 const navItemDefaultClasses = "block px-4 py-2 rounded-md flex flex-1";
 
@@ -69,13 +79,7 @@ function Sidebar() {
   const toggleNavbar = useCallback(() => {
     dispatch(setToggleNavbar());
   }, [dispatch]);
-  const initLoading = false;
-  const { pathname } = useLocation();
-  const company = [
-    {
-      companyName: "Paradise Cafe",
-    },
-  ];
+  const company = useSelector(getCompanyData);
 
   const handleLogout = useCallback(() => {
     if (window.confirm('Are you sure want to logout?')) {
@@ -89,16 +93,34 @@ function Sidebar() {
   
 
   const onClickNavbar = useCallback(() => {
-    const isMobile = window.innerWidth < 767;
+    const isMobile = window.innerWidth < MOBILE_OVERLAY_BREAKPOINT;
     if (isMobile) {
       toggleNavbar();
     }
   }, [toggleNavbar]);
 
-  const aboutRoute = useMemo(() => pathname === "/about", [pathname]);
+  // Let Escape dismiss the drawer, but only in overlay mode — on a pinned
+  // desktop sidebar, Escape is likely meant for something else (e.g. a modal).
+  useEffect(() => {
+    if (!showNavbar) return undefined;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && window.innerWidth < MOBILE_OVERLAY_BREAKPOINT) {
+        dispatch(setNavbarFalse());
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showNavbar, dispatch]);
 
   return (
     <>
+      {showNavbar && (
+        <div
+          className="fixed inset-0 z-[9] bg-black/40 sm:hidden"
+          onClick={toggleNavbar}
+          aria-hidden="true"
+        />
+      )}
       <nav
         className={
           showNavbar
@@ -127,27 +149,10 @@ function Sidebar() {
             <span className="nav-loading">
               <HiOutlineHome className="h-5 w-6 mb-[0.4rem] ml-11" />
             </span>
-            Paradise Cafe
+            {company?.companyName || "Business Name"}
           </motion.span>
         </div>
 
-        {initLoading && <Skeleton className="px-4 py-5 rounded-md" />}
-        {!!company?.image && !initLoading && (
-          <motion.span
-            className={
-              navItemDefaultClasses + " bg-gray-50 flex items-center px-3"
-            }
-          >
-            <img
-              className={"object-cover h-10 w-10 rounded-lg"}
-              src={company?.image}
-              alt="upload_image"
-            />
-            <span className="flex-1 pl-2 font-title rounded-r py-1 border-r-4 border-indigo-400 flex items-center inline-block whitespace-nowrap text-ellipsis overflow-hidden ">
-              {company?.companyName}
-            </span>
-          </motion.span>
-        )}
         <ul className="mt-4">
           <NavLink to="/invoices/new">
             {({ isActive }) => {
@@ -191,7 +196,7 @@ function Sidebar() {
           </NavLink>
           <div className="mt-4">
             {/* {NAV_DATA */}
-            {NAV_DATA.filter(({ title }) => isAdmin || (!isAdmin && title !== "Dashboard" && title !== "Import"))
+            {NAV_DATA.filter(({ title }) => isAdmin || (!isAdmin && title !== "Dashboard" && title !== "Import" && title !== "Business Profile"))
             .map(({ title, link, Icon }) => (
               <li key={title} className="mb-2">
                 <NavLink
@@ -231,44 +236,14 @@ function Sidebar() {
         </ul>
 
         <hr />
-
-        <div className="my-4">
-          <NavLink to={"about"} onClick={onClickNavbar}>
-            <motion.span
-              className="block px-4 py-2 rounded-md flex text-default-color"
-              style={{
-                color: aboutRoute ? "primary-self-text" : "#777",
-              }}
-              whileHover={{
-                scale: [1.03, 1, 1.03, 1, 1.03, 1, 1.03, 1],
-                color: "primary-self-text",
-                textShadow: "0px 0px 3px #85FF66",
-                transition: {
-                  backgroundColor: {
-                    type: "spring",
-                    damping: 18,
-                  },
-                },
-              }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <SecurityIcon className="h-6 w-6 mr-4" />
-              About Dev
-            </motion.span>
-          </NavLink>
+        <div className="w-full px-8 mt-5 mb-8">
+          <button
+            onClick={handleLogout}
+            className="w-1/2 px-4 py-2 text-white text-center text-sm bg-red-500 rounded-md transition-colors duration-300 hover:bg-red-700"
+          >
+            Logout
+          </button>
         </div>
-
-        <hr />
-        <div className="absolute bottom-auto w-full px-8 mt-5">
-  <button
-    onClick={handleLogout}
-    className="w-1/2 px-4 py-2 text-white text-center text-sm bg-red-500 rounded-md transition-colors duration-300 hover:bg-red-700"
-  >
-    Logout
-  </button>
-
-</div>
-
       </nav>
     </>
   );

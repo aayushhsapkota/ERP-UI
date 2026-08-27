@@ -1,5 +1,4 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
-import { todayNepaliDate } from "../../components/Common/todayNepaliDate";
 import { NotifyWarning } from "../../toastify";
 import * as api from "../API/InvoiceApi";
 import { onAddOrRemoveProduct, onUpdateInvoiceProduct } from "./productSlice";
@@ -33,7 +32,6 @@ const initialState = {
     paidAmount: 0,
     dueDate: "",
     invoiceType: "Sale",
-    createdDate: todayNepaliDate(new Date()),
     currencyUnit: "Rs.",
     clientDetail: {
       id: "",
@@ -68,7 +66,6 @@ export const createNewInvoice = (payload) => async (dispatch) => {
         status: payload.statusName,
         transactionNumber: data._id,
         transactionType: payload.invoiceType,
-        createdDate: payload.createdDate,
       })
     );
 
@@ -111,7 +108,6 @@ export const updatedInvoice = (payload) => async (dispatch) => {
         status: payload.statusName,
         transactionNumber: data._id,
         transactionType: payload.invoiceType,
-        createdDate: data.createdDate,
       })
     );
     dispatch(onUpdateInvoiceProduct());
