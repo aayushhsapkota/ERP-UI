@@ -57,6 +57,10 @@ Unlike most Vite apps, the backend URL isn't read from an env file — it's set 
 
 Auth is JWT-based: on sign-in, the token is stored in `localStorage` under `erp-token` and attached to every request as a `Bearer` header by an Axios interceptor.
 
+## Date & time handling
+
+Dates throughout the app use the Nepali (Bikram Sambat) calendar for display, backed by UTC storage on the server. See [`erp-backend`'s DATE_HANDLING.md](https://github.com/aayushhsapkota/erp-backend/blob/master/DATE_HANDLING.md) for the full picture — read it before touching `NepaliDatePicker.jsx`, `ConvertEnglishDate.jsx`, or any date-range filter.
+
 ## Project structure
 
 ```
