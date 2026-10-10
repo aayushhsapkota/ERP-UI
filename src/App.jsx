@@ -35,6 +35,7 @@ import {
 
 import { useRef } from "react";
 import Login from "./pages/Login/login";
+import { bootstrapAuth, logout } from "./stateManagement/slice/authSlice";
 
 const ExpenseLazy = lazy(() =>
   wait(1000).then(() => import("./pages/expenses/ExpenseListScreen"))
@@ -96,6 +97,7 @@ const BusinessProfileLazy = lazy(() =>
 const App = () => {
   const isAuthorized = useSelector((state) => state.auth.isAuthorized);
   const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const initializing = useSelector((state) => state.auth.initializing);
   const dispatch = useDispatch();
 
   const containerRef = useRef(null);
@@ -105,11 +107,34 @@ const App = () => {
     }
   }, [SecureClientKeyType, SecureClientRight]);
 
+  // Restores the session from the httpOnly refresh cookie on first load,
+  //  this is the new way the app finds out whether someone's
+  // already logged in after a reload.
+  useEffect(() => {
+    dispatch(bootstrapAuth());
+  }, [dispatch]);
+
+  // The axios interceptor (API/index.js) fires this when a background token
+  // refresh fails - i.e. the session is gone (expired/revoked) 
+  useEffect(() => {
+    const handleSessionExpired = () => dispatch(logout());
+    window.addEventListener("auth:sessionExpired", handleSessionExpired);
+    return () =>
+      window.removeEventListener("auth:sessionExpired", handleSessionExpired);
+  }, [dispatch]);
+
   useEffect(() => {
     if (isAuthorized) {
       dispatch(fetchCompanyData());
     }
   }, [isAuthorized, dispatch]);
+
+  // Hold off rendering the login screen until we know whether the refresh
+  // cookie actually restored a session - otherwise every reload would flash
+  // the login page for an already-logged-in user before bootstrapAuth settles.
+  if (initializing) {
+    return <PageLoading firstRender={true} />;
+  }
 
   return (
     <BrowserRouter>
