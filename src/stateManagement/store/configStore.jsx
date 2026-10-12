@@ -9,25 +9,12 @@ import paymentSlice from "../slice/paymentSlice";
 import expenseReducer from "../slice/expenseSlice";
 import editLogicReducer from "../slice/editLogic";
 import authReducer from "../slice/authSlice";
-import { logout } from "../slice/authSlice";
-import jwt_decode from "jwt-decode";
 
-function isTokenExpired(token) {
-  const decodedToken = jwt_decode(token);
-  const currentTime = Date.now().valueOf() / 1000;
+// We no longer check token expiry here because the access token is not
+// stored in localStorage anymore. Instead, the Axios response interceptor
+// in API/index.js handles 401 errors by refreshing the token and retrying
+// the failed request automatically.
 
-  return decodedToken.exp < currentTime;
-}
-
-const checkTokenExpirationMiddleware = storeAPI => next => action => {
-  const token = localStorage.getItem('erp-token');
-  
-  if (token && isTokenExpired(token)) {
-    storeAPI.dispatch(logout());
-  }
-
-  return next(action);
-};
 
 export const store = configureStore({
   reducer: {
@@ -46,6 +33,6 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(checkTokenExpirationMiddleware),
+    }),
   devTools: process.env.NODE_ENV !== "production",
 });
