@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../API/AuthApi";
+import { refreshAccessToken } from "../API/index";
 import jwt_decode from "jwt-decode";
 import { setAccessToken, clearAccessToken } from "../API/tokenStore";
 
@@ -20,12 +21,18 @@ export const login = createAsyncThunk(
 // for a fresh access token, so a page reload doesn't force a re-login.
 // There's no token in localStorage to check anymore - the only way to know
 // whether a session exists is to ask the server.
+//
+// Goes through the SAME shared refreshAccessToken() the axios interceptor
+// uses (not AuthApi.RefreshApi, which would fire its own independent
+// request) - refresh tokens are single-use, so under StrictMode's
+// double-invoked effects two uncoordinated calls here would race each
+// other and one would spuriously 401 even though the other succeeded.
 export const bootstrapAuth = createAsyncThunk(
   'auth/bootstrap',
   async (_, thunkAPI) => {
     try {
-      const response = await api.RefreshApi();
-      return response.data;
+      const token = await refreshAccessToken();
+      return token;
     } catch (error) {
       return thunkAPI.rejectWithValue(null);
     }
@@ -80,9 +87,9 @@ const authSlice = createSlice({
       })
 
       .addCase(bootstrapAuth.fulfilled, (state, action) => {
-        setAccessToken(action.payload.token);
+        // refreshAccessToken() already called setAccessToken() internally;
         state.isAuthorized = true;
-        state.isAdmin = jwt_decode(action.payload.token).isAdmin;
+        state.isAdmin = jwt_decode(action.payload).isAdmin;
         state.initializing = false;
       })
       .addCase(bootstrapAuth.rejected, (state) => {
